@@ -97,6 +97,33 @@
 	  <category>Mobile</category>
       <description>Enables/disables auto capitalize functionality on username input field for mobile devices</description>
     </property>
+	<property key="contextEntity" type="entity" required="false" allowNonPersistableEntities="true">
+		<caption>Context Entity</caption>
+		<category>Before Login</category>
+		<description>The context entity, which will be passed to the before login microflow.</description>
+	</property>
+	<property key="userAttr" type="attribute" required="false" entityProperty="contextEntity">
+		<caption>Username Attribute</caption>
+		<category>Before Login</category>
+		<description>The username attribute of the context entity</description>
+		<attributeTypes>
+			<attributeType name="String" />
+		</attributeTypes>
+	</property>
+	<property key="passwordAttr" type="attribute" required="false" entityProperty="contextEntity">
+		<caption>Password Attribute</caption>
+		<category>Before Login</category>
+		<description>The password attribute of the context entity</description>
+		<attributeTypes>
+			<attributeType name="String" />
+		</attributeTypes>
+	</property>
+  	<property key="beforeloginmf" type="microflow" required="false" entityProperty="contextEntity">
+      <caption>Before login microflow</caption>
+      <category>Before Login</category>
+      <description>Microflow fire before trying to log in. Useful for custom SSO solutions.</description>
+      <returnType type="Boolean"/>
+  	</property>
   </properties>
 </widget>
 

@@ -39,12 +39,17 @@
              * ======================
              */
             _handle: null,
+			_contextObj: null,
+			beforeloginmf: "",
+			userAttr: "",
+			passwordAttr: "",
 
             // Extra variables
             _userInput : null,
             _passInput : null,
             _captionShow : null,
             _captionHide : null,
+			_currentE: null,
 
             _indicator : null,
             _i18nmap : null,
@@ -78,7 +83,9 @@
              */
 
             update: function (obj, callback) {
-
+				
+				this._contextObj = obj;
+				
                 // Execute callback.
                 if (typeof callback !== 'undefined') {
                     callback();
@@ -186,58 +193,7 @@
             // Attach events to newly created nodes.
             _setupEvents: function () {
 
-                on(this.submitButton, 'click', lang.hitch(this, function(e) {
-
-                    var user = null,
-                        pass = null,
-                        promise = null;
-
-                    domStyle.set(this.messageNode, 'display', 'none');
-
-                    if (attr.get(this._passInput, 'type') === 'text') {
-                        attr.set(this._passInput, 'type', 'password');
-                        dom.byId(this.id + '_view').innerHTML = this._captionShow;
-                    }
-
-                    logger.debug(this.id + '.submitForm');
-
-                    user = this._userInput.value;
-                    pass = this._passInput.value;
-
-                    if(user && pass) {
-                        if (typeof this._indicator !== 'undefined' && this._indicator){
-                            this._indicator.start();
-                        }
-
-                        dojo.rawXhrPost({
-                            url			: mx.baseUrl,
-                            mimetype	: 'application/json',
-                            contentType	: 'application/json',
-                            handleAs	: 'json',
-                            headers     : {
-                                'csrfToken' : mx.session.getCSRFToken()
-                            },
-                            postData	: dojoJSON.toJson({
-                                action		: "login",
-                                params		: {
-                                    username	: user,
-                                    password	: pass,
-                                    locale		: ""
-                                }
-                            }),
-                            handle		: lang.hitch(this, this._validate)
-                        });
-
-                    } else {
-                        domStyle.set(this.messageNode, 'display', 'block');
-                        this.messageNode.innerHTML = this.emptytext; 
-                    }
-
-                    event.stop(e);
-
-                    return false;
-
-                })); 
+                on(this.submitButton, 'click', lang.hitch(this, this._onSubmit));
 
                 if(this.forgotmf)
                 {
@@ -316,6 +272,95 @@
                 this.messageNode.innerHTML = message; // is only reached when xhrstatus !== 200
                 domStyle.set(this.messageNode, 'display', 'block');
             },
+			
+			_onSubmit: function(e) {
+				this._currentE = e;
+				
+				if(this.beforeloginmf) {
+					this._contextObj.set(this.userAttr, this._userInput.value);
+					this._contextObj.set(this.passwordAttr, this._passInput.value);
+					event.stop(e);
+					
+					mx.data.action({
+                        params: {
+                            applyto: "selection",
+                            actionname: this.beforeloginmf,
+                            guids: [ this._contextObj.getGuid() ]
+                        },
+                        store: {
+                            caller: this.mxform
+                        },
+                        callback: lang.hitch(this, function(obj) {
+                            if(obj) {
+								this._loginSubmit(this._currentE);	
+							} else {
+								this.messageNode.innerHTML = "Failed to authenticate";
+                				domStyle.set(this.messageNode, 'display', 'block');	
+							}
+                        }),
+                        error: lang.hitch(this, function(error) {
+                            logger.error(this.id + ": An error occurred while executing microflow: " + error.description);
+                        })
+                    }, this);
+				} else {
+					this._loginSubmit(e);
+				}
+				
+			},
+			
+			_loginSubmit: function(e) {
+
+				var user = null,
+					pass = null,
+					promise = null;
+
+				domStyle.set(this.messageNode, 'display', 'none');
+
+				if (attr.get(this._passInput, 'type') === 'text') {
+					attr.set(this._passInput, 'type', 'password');
+					dom.byId(this.id + '_view').innerHTML = this._captionShow;
+				}
+
+				logger.debug(this.id + '.submitForm');
+
+				user = this._userInput.value;
+				pass = this._passInput.value;
+
+				if(user && pass) {
+					if (typeof this._indicator !== 'undefined' && this._indicator){
+						this._indicator.start();
+					}
+
+					dojo.rawXhrPost({
+						url			: mx.baseUrl,
+						mimetype	: 'application/json',
+						contentType	: 'application/json',
+						handleAs	: 'json',
+						headers     : {
+							'csrfToken' : mx.session.getCSRFToken()
+						},
+						postData	: dojoJSON.toJson({
+							action		: "login",
+							params		: {
+								username	: user,
+								password	: pass,
+								locale		: ""
+							}
+						}),
+						handle		: lang.hitch(this, this._validate)
+					});
+
+				} else {
+					domStyle.set(this.messageNode, 'display', 'block');
+					this.messageNode.innerHTML = this.emptytext; 
+				}
+
+				event.stop(e);
+
+				return false;
+
+			}, 
+			
 
             _getI18NMap : function() {
                 logger.debug(this.id + '.injectI18NMap');
