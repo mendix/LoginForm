@@ -81,7 +81,7 @@
       <category>Behavior</category>
       <description>Microflow being triggered in case of 'forgot password' onclick</description>
       <returnType type="Void"/>
-  	</property>	
+  	</property>
 	<property key="dofocus" type="boolean" defaultValue="false">
       <caption>Focus username input field</caption>
 	  <category>Behavior</category>
@@ -92,11 +92,20 @@
 	  <category>Mobile</category>
       <description>Enables/disables auto correct functionality on username input field for mobile devices</description>
     </property>
-  	<property key="autoCapitalize" type="boolean" defaultValue="false">
+    <property key="autoCapitalize" type="boolean" defaultValue="false">
       <caption>Auto capitalize</caption>
 	  <category>Mobile</category>
-      <description>Enables/disables auto capitalize functionality on username input field for mobile devices</description>
+      <description>Enables/disables auto capitalize functionality on username input field for mobile device keyboards</description>
+    </property>
+    <property key="convertCase" type="enumeration" defaultValue="Off">
+      <caption>Convert to lowercase/uppercase</caption>
+    <category>Casehandling</category>
+      <description>Enables/disables automatic conversion of username input field to lowercase/uppercase</description>
+      <enumerationValues>
+        <enumerationValue key="Off">Off</enumerationValue>
+        <enumerationValue key="toLowerCase">Convert to lowercase</enumerationValue>
+        <enumerationValue key="toUpperCase">Convert to uppercase</enumerationValue>
+      </enumerationValues>
     </property>
   </properties>
 </widget>
-
