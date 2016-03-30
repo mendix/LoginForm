@@ -158,6 +158,12 @@
                     attr.set(this._userInput, 'autocapitalize', 'on');
                 }
 
+                if (this.convertCase === "toLowerCase"){
+                	attr.set(this._userInput, 'onChange', 'javascript:this.value = this.value.toLowerCase();');
+                } else if(this.convertCase === "toUpperCase"){
+                  attr.set(this._userInput, 'onChange', 'javascript:this.value = this.value.toUpperCase();');
+                }
+
 
                 // Setup text input elements
                 this.submitButton.value = this.logintext;
@@ -176,7 +182,7 @@
                     this._indicator = mx.ui.getProgress(this.progresstext);
                 }
 
-                if (typeof this.dofocus !== 'undefined' && this.dofocus) { 
+                if (typeof this.dofocus !== 'undefined' && this.dofocus) {
                     this._focusNode();
                 }
 
@@ -230,14 +236,14 @@
 
                     } else {
                         domStyle.set(this.messageNode, 'display', 'block');
-                        this.messageNode.innerHTML = this.emptytext; 
+                        this.messageNode.innerHTML = this.emptytext;
                     }
 
                     event.stop(e);
 
                     return false;
 
-                })); 
+                }));
 
                 if(this.forgotmf)
                 {
@@ -252,7 +258,7 @@
                                     actionname : action
                                 },
                                 callback	: function() {
-                                    // ok	
+                                    // ok
                                 },
                                 error		: function() {
                                     logger.error(this.id + '.forgotPwd: Error while calling microflow');
@@ -261,7 +267,7 @@
                         }
 
                         event.stop(e);
-                    }));  
+                    }));
                 }
             },
 
@@ -272,7 +278,7 @@
              */
             _loadData: function () {
                 // TODO, get aditional data from mendix.
-            },            
+            },
 
             _validate : function(response, ioArgs) {
                 var i18nmap = null,
@@ -343,5 +349,3 @@
     });
 
 }());
-
-
