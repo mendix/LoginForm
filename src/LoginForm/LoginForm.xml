@@ -51,6 +51,11 @@
 	  <category>Behavior</category>
       <description>Display a progress bar while signing in</description>
     </property>
+	<property key="forceUserLowercase" type="boolean" defaultValue="false">
+      <caption>Lower case username</caption>
+	  <category>Display</category>
+      <description>Automatically converts the username entered to lowercase before authenticating.</description>
+    </property>  
   	<property key="showPasswordView" type="boolean" defaultValue="false">
       <caption>Show/mask password toggle</caption>
 	  <category>Password</category>

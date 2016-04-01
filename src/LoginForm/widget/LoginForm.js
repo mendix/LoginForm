@@ -43,6 +43,7 @@
 			beforeloginmf: "",
 			userAttr: "",
 			passwordAttr: "",
+			forceUserLowercase: false,
 
             // Extra variables
             _userInput : null,
@@ -325,6 +326,12 @@
 
 				user = this._userInput.value;
 				pass = this._passInput.value;
+				
+				//ET 3/31/2016
+				if (this.forceUserLowercase) {				
+					user = user.toLowerCase();
+				}
+				
 
 				if(user && pass) {
 					if (typeof this._indicator !== 'undefined' && this._indicator){
