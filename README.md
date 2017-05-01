@@ -18,6 +18,11 @@ For more information on contributing to this repository visit [Contributing to a
 - Insert the widget in a page
 - Configure the properties
 
+## Usage in offline apps
+This widget can be used in offline apps. This is useful when anonymous access is enabled, offline synchronization is only enabled after login with a named user.
+
+Note that forgot password functionality cannot be used for offline apps as this requires a microflow call.
+
 ## Properties
 
 ### Display
