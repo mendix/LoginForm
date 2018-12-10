@@ -135,6 +135,16 @@
                 <enumerationValue key="toUpperCase">Convert to uppercase</enumerationValue>
             </enumerationValues>
         </property>
+        <property key="trimUsername" type="boolean" defaultValue="false">
+            <caption>Trim username</caption>
+            <category>Whitespace</category>
+            <description>Trim leading and trailing whitespace from the username</description>
+        </property>
+        <property key="trimPassword" type="boolean" defaultValue="false">
+            <caption>Trim password</caption>
+            <category>Whitespace</category>
+            <description>Trim leading and trailing whitespace from the password</description>
+        </property>
         <property key="autoCorrect" type="boolean" defaultValue="false">
             <caption>Auto-correct</caption>
             <category>Mobile</category>

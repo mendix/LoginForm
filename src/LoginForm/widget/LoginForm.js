@@ -13,6 +13,12 @@
  ========================
  A custom login form which can be used as an alternative to the default Mendix login page.
  */
+// polyfill for trim functionality
+if (!String.prototype.trim) {
+  String.prototype.trim = function () {
+    return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+  };
+}
 define([
 
     "mxui/widget/_WidgetBase", "dijit/_TemplatedMixin", "mxui/dom",
@@ -93,6 +99,11 @@ define([
          * Case Handling
          */
         convertCase: "none",
+        /**
+         * Whitespace handing
+         */
+        trimPassword: false,
+        trimUsername: false,
 
         // Internal variables. Non-primitives created in the prototype are shared between all widget instances.
         _handle: null,
@@ -281,8 +292,8 @@ define([
                 this.togglePasswordVisibility();
             }
 
-            var username = this._changeCase(this.usernameInputNode.value),
-                password = this.passwordInputNode.value;
+            var username = this._trimUsername(this._changeCase(this.usernameInputNode.value)),
+                password = this._trimPassword(this.passwordInputNode.value);
 
             if (username && password) {
                 if (this.showprogress) {
@@ -366,6 +377,26 @@ define([
                 return username.toLowerCase();
             }
             return username;
+        },
+        /**
+         * Trim leading and trailing whitespace from the username if option selected.
+         */
+        _trimUsername: function(username) {
+            if (this.trimUsername) {
+                return username.trim();
+            } else {
+                return username;
+            }
+        },
+        /**
+         * Trim leading and trailing whitespace from the password if option selected.
+         */
+        _trimPassword: function(password) {
+            if (this.trimPassword) {
+                return password.trim();
+            } else {
+                return password;
+            }
         },
         /**
          * Sets focus to the username input node if not the default
