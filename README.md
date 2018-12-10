@@ -52,5 +52,9 @@ For more information on contributing to this repository visit [Contributing to a
 * Convert to lower/uppercase - this option will convert user name input to upper/lower case. Using this functionality only makes practical sense when all usernames defined in your application are either upper or lower cased.
 NOTE: MxAdmin administrative user will be accessible in both cases as well.
 
+### Whitespace
+* Trim username - this option will trim leading and trailing whitespace from the username on submission
+* Trim password - this option will trim leading and trailing whitespace from the password on submission
+
 ## Known issues
 - Mendix runtime returns no feedback about the existence of a username. This is by design.
